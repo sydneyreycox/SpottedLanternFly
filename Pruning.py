@@ -3,7 +3,7 @@ def prune(inputFile, outputFile):
     prunedLF = open(outputFile,'w+',encoding='utf-8')
     for val in inputLines:
         broken = val.split('\t')
-        if(not None in [broken[0],broken[21],broken[22],broken[29]]): 
+        if(not "" in [broken[0],broken[21],broken[22],broken[29]]): 
             prunedLF.write(broken[0] + "," + broken[21]+ "," + broken[22] + "," + broken[29]+'\n')
 prune('datafiles/BW Data.csv','datafiles/BWData_Pruned.csv')
 prune('datafiles/Grape Data.csv','datafiles/GrData_Pruned.csv')
