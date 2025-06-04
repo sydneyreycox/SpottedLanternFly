@@ -37,9 +37,9 @@ def split(inputFile, outputPath):
 def main():
     tags = ['datafiles/BWData_Pruned.csv','datafiles/GrData_Pruned.csv','datafiles/HpData_Pruned.csv',\
         'datafiles/RMData_Pruned.csv','datafiles/SMData_Pruned.csv','datafiles/TOHData_Pruned.csv',\
-        'datafiles/LFData_Pruned.csv','datafiles/LBData_Pruned.csv','datafiles/MWData_Pruned.csv']
+        'datafiles/LFData_Pruned.csv','datafiles/LBData_Pruned.csv','datafiles/BLData_Pruned.csv']
     locs = ['datefiles/BWDataSplit','datefiles/GrDataSplit','datefiles/HpDataSplit','datefiles/RMDataSplit',\
-        'datefiles/SMDataSplit','datefiles/TOHDataSplit','datefiles/LFDataSplit','datefiles/LBDataSplit','datefiles/MWDataSplit']
+        'datefiles/SMDataSplit','datefiles/TOHDataSplit','datefiles/LFDataSplit','datefiles/LBDataSplit','datefiles/BLDataSplit']
     for l in locs:
         mkdir(l)
     for t,l in zip(tags,locs):
