@@ -11,7 +11,7 @@ def generateDataArray(path):
         data.append([lon,lat])
     return np.array(data)
 
-tree_points = generateDataArray('datefiles/TOHDataSplit/TOHData_Pruned2024.csv')
+tree_points = generateDataArray('datefiles/SMDataSplit/SMData_Pruned2024.csv')
 slf_points = generateDataArray('datefiles/LFDataSplit/LFData_Pruned2024.csv')
 
 tree_kdtree = cKDTree(tree_points)
@@ -23,24 +23,40 @@ from shapely.geometry import box, Point
 import random
 
 # Create bounding box
-minx, miny = np.min(slf_points, axis=0)
-maxx, maxy = np.max(slf_points, axis=0)
+
+import alphashape
+
+# Create alpha shape (concave hull) around SLF points
+alpha = 0.95  # Adjust this as needed. Smaller = tighter shape
+slf_shape = alphashape.alphashape(slf_points, alpha)
+
+# Function to generate random points within the alpha shape
+def generate_random_within_shape(shape, n):
+    points = []
+    minx, miny, maxx, maxy = shape.bounds
+    while len(points) < n:
+        x = random.uniform(minx, maxx)
+        y = random.uniform(miny, maxy)
+        if shape.contains(Point(x, y)):
+            points.append([x, y])
+    return np.array(points)
+
 
 # Generate N random SLF points
-n_sim = 1000
+n_sim = 100
 random_distances = []
 
 for _ in range(n_sim):
-    rand_points = np.array([
-        [random.uniform(minx, maxx), random.uniform(miny, maxy)]
-        for _ in range(len(slf_points))
-    ])
+    rand_points = generate_random_within_shape(slf_shape, len(slf_points))
     rand_dists, _ = tree_kdtree.query(rand_points, k=1)
     random_distances.append(np.mean(rand_dists))
     
 import matplotlib.pyplot as plt
 p_value = np.mean([d <= mean_distance for d in random_distances])
-print(f"p-value: {p_value:.20f}")
+print(f"p-value: {p_value:.4f}")
+print(f"Observed mean distance: {mean_distance}")
+print(f"Min random mean: {min(random_distances)}")
+print(f"Max random mean: {max(random_distances)}")
 plt.hist(random_distances, bins=30, alpha=0.7, label="Random")
 plt.axvline(mean_distance, color='red', linestyle='--', label="Observed SLF")
 plt.legend()
@@ -49,3 +65,18 @@ plt.xlabel("Mean distance to nearest tree")
 plt.ylabel("Frequency")
 plt.show()
 
+rand_points_sample = generate_random_within_shape(slf_shape, len(slf_points))
+
+# Plot the distributions
+plt.figure(figsize=(8, 8))
+plt.scatter(tree_points[:, 0], tree_points[:, 1], s=1, c='green', label='Trees', alpha=0.5)
+plt.scatter(slf_points[:, 0], slf_points[:, 1], s=1, c='red', label='SLF', marker='x')
+plt.scatter(rand_points_sample[:, 0], rand_points_sample[:, 1], s=1, c='blue', label='Random Points', alpha=0.01)
+
+plt.legend()
+plt.title("SLF, Trees, and Sample Random Points")
+plt.xlabel("Longitude")
+plt.ylabel("Latitude")
+plt.grid(True)
+plt.axis('equal')
+plt.show()
