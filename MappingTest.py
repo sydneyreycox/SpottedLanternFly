@@ -37,8 +37,8 @@ ax.coastlines() #We need coastlines
 ax.add_feature(feet.BORDERS) #International Borders, shows our data in US
 ax.add_feature(feet.LAND, edgecolor ='black') #Draw the land seperately
 
-plotAlphaShape(ax,TOHdata,0.95,col.to_rgba('red',0.20),col.to_rgba('red',0.50),col.to_rgba('red',0.10))
-plotAlphaShape(ax,LFdata,0.95,col.to_rgba('blue',0.20),col.to_rgba('blue',0.50),col.to_rgba('blue',0.10))
+plotAlphaShape(ax,TOHdata,0.95,col.to_rgba('red',0.20),col.to_rgba('red',0.50),col.to_rgba('red',0.10)) #TOH Plot
+plotAlphaShape(ax,LFdata,0.95,col.to_rgba('blue',0.20),col.to_rgba('blue',0.50),col.to_rgba('blue',0.10)) #LF Plot
 
 #North America Range
 ax.set_extent([-130,-60,20,60],crs=ccrs.PlateCarree())
