@@ -13,40 +13,28 @@ la1 = B[0]
 la2 = B[1]
 lo2 = B[2]
 r1 = len(truncData)
-#r2 = 0
 tally = []
-index = 0
-
+indexr = 0
 
 while la1 < la2:
-    #print('la1:',la1)
     lo1 = B[3]
-    indexr = 0
+    index = 0
     while lo1 > lo2:
         t1 = 0
-        #print('\n',truncData[t1][0], truncData[t1][1])
-        #print('lo1:',lo1)
         while t1 < r1:
-            #print('t1',t1)
-            #present = 0
             if(truncData[t1][0] == la1 and truncData[t1][1] == lo1):
-                #present += 1
                 found = False
                 for pair in tally:
-                    if pair[0] == index:
+                    if pair[0] == index and pair[1] == indexr:
                         pair[2] += 1 
                         found = True
                         break
                 if not found:
-                    tally.append([index,indexr, 1])
-                #tally.append([index,present])  
-                #print('\n',truncData[t1][0], truncData[t1][1])
+                    tally.append([index,indexr, 1]) # [longitude_col, latitude_row, count]
             t1 += 1
         lo1 = round(lo1 - 0.1, 1)
-        #print(lo1)
-        indexr += 1
-    index += 1
+        index += 1
     la1 = round(la1 + 0.1, 1)
-    #print(index)
+    indexr += 1
 
 print(tally)
