@@ -8,8 +8,8 @@ for line in file:
 B = [-125.0, -69.0, 25.0, 50.0]
 
 stepsize = 0.1
-maxla = 56.0/stepsize + 1
-maxlo = 25.0/stepsize + 1
+maxla = (B[1] - B[0])/stepsize + 1
+maxlo = (B[3] - B[2])/stepsize + 1
 i = 0
 tally = [[0.0 for _ in range(int(maxla))] for _ in range(int(maxlo))]
 
