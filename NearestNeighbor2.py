@@ -11,8 +11,8 @@ def generateDataArray(path):
         data.append([lon,lat])
     return np.array(data)
 
-tree_points = generateDataArray('datefiles/TOHDataSplit/TOHData_Pruned2024.csv')
-tree_points2 = generateDataArray('datefiles/SMDataSplit/SMData_Pruned2024.csv')
+tree_points = generateDataArray('datefiles/RMDataSplit/RMData_Pruned2024.csv')
+tree_points2 = generateDataArray('datefiles/ASDataSplit/ASData_Pruned2024.csv')
 slf_points = generateDataArray('datefiles/LFDataSplit/LFData_Pruned2024.csv')
 
 tree_kdtree = cKDTree(tree_points)
@@ -27,14 +27,12 @@ import matplotlib.pyplot as plt
 
 print(f"Observed mean distance: {mean_distance}")
 
-plt.hist(distances, bins=30, alpha=0.7, label="DistanceTOH")
-plt.axvline(mean_distance, color='red', linestyle='--', label="Observed SLF")
-plt.hist(distances2, bins=30, alpha=0.7, label="DistanceSM")
-plt.axvline(mean_distance2, color='black', linestyle='--', label="Observed SLF")
+plt.hist(distances, bins=30, alpha=0.7, label="DistanceRM")
+plt.axvline(mean_distance, color='red', linestyle='--', label="Observed SLF/RM")
+plt.hist(distances2, bins=30, alpha=0.7, label="DistanceAS")
+plt.axvline(mean_distance2, color='black', linestyle='--', label="Observed SLF/AS")
 plt.legend()
-plt.title("Monte Carlo Test: SLF Distance to Trees")
+plt.title("Distance Measures: SLF Distance to Trees")
 plt.xlabel("Mean distance to nearest tree")
 plt.ylabel("Frequency")
 plt.show()
-
-
