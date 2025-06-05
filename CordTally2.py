@@ -9,7 +9,7 @@ def coordTal(path):
         lat,lon = map(float,line.split(',')[1:3])
         data.append([lon,lat])
 
-    B = [-75.0, -73.0, 39.0, 41.0]
+    B = [-78.5, -76.0, 39.5, 41.0]
 
     stepsize = 0.1
     maxla = (B[1] - B[0])/stepsize + 1
@@ -35,7 +35,7 @@ def coordTal(path):
 graphData = []
 
 tallySLF = coordTal('datafiles/LFData_Pruned.csv')
-tallyT = coordTal('datafiles/ASData_Pruned.csv')
+tallyT = coordTal('datafiles/RMData_Pruned.csv')
 
 for x,val in enumerate(tallyT):
     for y in range(len(val)):
@@ -53,7 +53,7 @@ print(r_value,p_value)
 plt.figure(figsize=(8, 5))
 plt.plot(TPoints, SLFPoints, 'o', label="Observations per Bin")
 plt.plot(TPoints, predicted, 'r--', label=f"Linear Fit (R²={r_value**2:.3f}, Fit={slope:.3f}x+{intercept:.3f})")
-plt.title("SLF Observations to AS Observations with Linear Fit")
+plt.title("SLF Observations to RM Observations with Linear Fit")
 plt.xlabel("Tree Observations")
 plt.ylabel("SLF Observations")
 plt.legend()
