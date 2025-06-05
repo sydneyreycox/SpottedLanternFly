@@ -74,7 +74,7 @@ comp('RM', 'AS', '10^-308', 0.04)
 comp('BW', 'AS', '10^-308', 0.055)
 comp('SM', 'AS', '4.66 * 10^-198', 0.04)
 
-plt.title("Kruskal-Wallis Test")
+plt.title("Distance of SLF to Trees")
 plt.xlabel("Tree")
 plt.ylabel("Distance")
 plt.tight_layout()
