@@ -5,6 +5,7 @@ from scipy.stats import linregress
 import alphashape
 import matplotlib.pyplot as plt
 
+#Intake file path and parse it into lat/lon array
 def generateDataArray(path):
     data = []
     file = open(path,'r',encoding = 'utf-8').readlines()[1:] #Skip line 1, read through the file
@@ -13,26 +14,29 @@ def generateDataArray(path):
         data.append([lon,lat])
     return np.array(data)
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+#Go through and generate alpha shapes and calculate areas and add to array
 bugTag = 'LF'
 outputData = []
 for i in range(2015,2025):
     bugAlpha = unary_union(alphashape.alphashape(generateDataArray(
         "datefiles/"+bugTag+"DataSplit/"+bugTag+"Data_Pruned"+str(i)+".csv"),0.95)
     ).buffer(0)
-    
+    #ln transform to conform to linearity
     outputData.append([i,np.log(bugAlpha.area)])
 outputData=np.array(outputData)
+#Split into our values
 time_stamps = outputData[:,0]
 area_values = outputData[:,1]
 
-
-
+#Run Linear Regression
 slope, intercept, r_value, p_value, std_err = linregress(time_stamps, area_values)
 
 # Predicted line
 predicted = intercept + slope * time_stamps
 
+#Generate the output graph
 print(r_value,p_value)
 plt.figure(figsize=(8, 5))
 plt.plot(time_stamps, area_values, 'o', label="ln(Area) of Range")

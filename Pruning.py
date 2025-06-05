@@ -1,3 +1,4 @@
+#Itterate through all the raw files and reduce it to only data after 2014, and reduce to id,lat,lon,date
 def prune(inputFile, outputFile):
     inputLines = open(inputFile,'r',encoding='utf-8').readlines()
     prunedLF = open(outputFile,'w+',encoding='utf-8')
@@ -8,6 +9,9 @@ def prune(inputFile, outputFile):
         if(not "" in [broken[0],broken[21],broken[22],broken[29]]): 
             if(int(broken[29][:4]) >= 2015):
                 prunedLF.write(broken[0] + "," + broken[21]+ "," + broken[22] + "," + broken[29]+'\n')
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 prune('datafiles/BW Data.csv','datafiles/BWData_Pruned.csv')
 prune('datafiles/Grape Data.csv','datafiles/GrData_Pruned.csv')
 prune('datafiles/Hops Data.csv','datafiles/HpData_Pruned.csv')
