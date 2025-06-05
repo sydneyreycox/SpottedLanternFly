@@ -2,6 +2,7 @@ from scipy.stats import kruskal
 import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
+import numpy as np
 
 def populate(path):
     num = list(map(float,(open(path,'r',encoding = 'utf-8').read().split(',')[1:])))
@@ -23,11 +24,11 @@ def remove_out(df, data):
     up = Quart2 + 1.5 * IQR
     return df[(df[data] >= low) & (df[data] <= up)]
 
-groups = (['AS'] * len(group1) +
-          ['BW'] * len(group2) +
+groups = (['TOH'] * len(group5) +
           ['RM'] * len(group3) +
+          ['BW'] * len(group2) +
           ['SM'] * len(group4) +
-          ['TOH'] * len(group5))
+          ['AS'] * len(group1) )
 
 df = pd.DataFrame({'value': data, 'group': groups})
 
@@ -40,7 +41,37 @@ statistic, pvalue = kruskal(*cleanData)
 print(f'Kruskal-Wallis Test\nH = {statistic:.3f}, p = {pvalue:.15e}') #p-value is so small is is not registered through python(practically zero)/
                                                                     #it is too small for python to register, must to Dunn's test
 
-sns.boxplot(x = 'group', y = 'value', data = dfNoOut,showfliers = False)#data has a lot of outliers, maybe we should look into a different visualization method.
+plot = sns.boxplot(x = 'group', y = 'value', data = dfNoOut,showfliers = False)#data has a lot of outliers, maybe we should look into a different visualization method.
+
+group_positions = {'TOH': 0, 'RM': 1, 'BW': 2, 'SM': 3, 'AS': 4} 
+
+boxes = plot.artists
+whiskers = plot.lines
+
+whiskers = plot.lines
+top_whiskers = [whiskers[i].get_ydata()[1] for i in range(1, len(whiskers), 2)]
+plot.set_ylim(top=max(top_whiskers) + 0.1)
+
+def comp(startg, endg, pval, height):
+    upStart = whiskers[2*group_positions[startg] + 1].get_ydata()[1]
+    upAS = whiskers[2*group_positions[endg] + 1].get_ydata()[1]
+
+    y = max(upStart, upAS) + 0.1  # add a little space above whisker
+    h = height # height of bracket
+    col = 'k' 
+
+    start = group_positions[startg]
+    end = group_positions[endg]
+
+    plot.plot([start, start, end, end], [y, y+h, y+h, y], lw=1.5, c=col)
+
+    plot.text((start+end)*.5, y+h, "p <" + pval, ha='center', va='bottom', color=col)
+
+comp('TOH', 'AS', '10^-308', 0.05)
+comp('RM', 'AS', '10^-308', 0.04)
+comp('BW', 'AS', '10^-308', 0.055)
+comp('SM', 'AS', '4.66 * 10^-198', 0.04)
+
 plt.title("Kruskal-Wallis Test")
 plt.xlabel("Tree")
 plt.ylabel("Distance")
