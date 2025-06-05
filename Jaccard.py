@@ -35,7 +35,7 @@ def getValues(bugTag,treeTag):
         #Run jaccard
         jc = jaccard(bugAlpha,treeAlpha)
         #Prevent -inf values from a 0 value in jc index, ln transform to provide linearity
-        if(jc>0): outputData.append([i,np.log(jc)])
+        if(jc>0): outputData.append([i,(jc)])
     #Return in the form of np.array for ease of plotting
     outputData=np.array(outputData)
     return outputData[:,0],outputData[:,1]
@@ -49,7 +49,7 @@ def plotBugTreeData(bugTag,treeTag,col):
     # Predicted line
     predicted = intercept + slope * xvals
     #Plot values
-    plt.plot(xvals, yvals, 'o', label="ln(Jaccard Index) "+treeTag,color=col)
+    plt.plot(xvals, yvals, 'o', label="Jaccard Index"+treeTag,color=col)
     #Plot linear regression curve and add to legend
     plt.plot(xvals, predicted, '--', label=f"Linear Fit (R²={r_value**2:.3f}, Slope={slope:.3f}, 2024:{yvals[len(yvals)-1]:.3f})",color=col)
     #)
@@ -60,13 +60,13 @@ def plotBugTreeData(bugTag,treeTag,col):
 plt.figure(figsize=(8, 5))
 #Plot all the important trees on the same graph and construct the legend
 plotBugTreeData('LF','TOH','blue')
-plotBugTreeData('LF','AS','orange')
-plotBugTreeData('LF','BW','green')
-plotBugTreeData('LF','SM','purple')
-plotBugTreeData('LF','RM','red')
+#plotBugTreeData('LF','AS','orange')
+#plotBugTreeData('LF','BW','green')
+#plotBugTreeData('LF','SM','purple')
+#plotBugTreeData('LF','RM','red')
 plt.title("Jaccard Index Over Time with Linear Fit")
 plt.xlabel("Year")
-plt.ylabel("ln(Jaccard Index)")
+plt.ylabel("Jaccard Index")
 plt.legend(fontsize='8')
 plt.grid(True)
 plt.show()

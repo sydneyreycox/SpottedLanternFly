@@ -28,8 +28,15 @@ def plotAlphaShape(graph,data,alphaval, innerCol, outerCol, pointCol): #Colors s
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   
-TOHdata = generateDataArray("datefiles/TOHDataSplit/TOHData_Pruned2024.csv")
-LFdata = generateDataArray("datefiles/LFDataSplit/LFData_Pruned2024.csv")
+#TOHdata = generateDataArray("datefiles/TOHDataSplit/TOHData_Pruned2017.csv")
+#LFdata = generateDataArray("datefiles/LFDataSplit/LFData_Pruned2017.csv")
+
+TOHdata = generateDataArray("datafiles/TOHData_Pruned.csv")
+LFdata = generateDataArray("datafiles/LFData_Pruned.csv")
+RMdata = generateDataArray("datafiles/RMData_Pruned.csv")
+SMdata = generateDataArray("datafiles/SMData_Pruned.csv")
+#ASdata = generateDataArray("datafiles/ASData_Pruned.csv")
+BWdata = generateDataArray("datafiles/BWData_Pruned.csv")
 
 #Boilerplate for generating our map in matplotlib
 fig,ax = plt.subplots(subplot_kw={'projection':ccrs.PlateCarree()}) #Render Map Object and projection
@@ -37,8 +44,12 @@ ax.coastlines() #We need coastlines
 ax.add_feature(feet.BORDERS) #International Borders, shows our data in US
 ax.add_feature(feet.LAND, edgecolor ='black') #Draw the land seperately
 
+plotAlphaShape(ax,RMdata,0.95,col.to_rgba('orange',0.20),col.to_rgba('orange',0.50),col.to_rgba('orange',0.5)) #LF Plot
+plotAlphaShape(ax,SMdata,0.95,col.to_rgba('green',0.20),col.to_rgba('green',0.50),col.to_rgba('green',0.5)) #LF Plot
+#plotAlphaShape(ax,ASdata,0.95,col.to_rgba('purple',0.20),col.to_rgba('purple',0.50),col.to_rgba('purple',0.1)) #LF Plot
+plotAlphaShape(ax,BWdata,0.95,col.to_rgba('yellow',0.20),col.to_rgba('yellow',0.50),col.to_rgba('yellow',0.5)) #LF Plot
 plotAlphaShape(ax,TOHdata,0.95,col.to_rgba('red',0.20),col.to_rgba('red',0.50),col.to_rgba('red',0.5)) #TOH Plot
-plotAlphaShape(ax,LFdata,0.95,col.to_rgba('blue',0.20),col.to_rgba('blue',0.50),col.to_rgba('blue',0.1)) #LF Plot
+plotAlphaShape(ax,LFdata,0.95,col.to_rgba('blue',0.20),col.to_rgba('blue',0.50),col.to_rgba('blue',0.5)) #LF Plot
 
 #North America Range
 ax.set_extent([-130,-60,20,60],crs=ccrs.PlateCarree())
