@@ -16,37 +16,41 @@ def generateDataArray(path):
 def jaccard(polyA,polyB):
     return polyA.intersection(polyB).area/polyA.union(polyB).area
 
-bugTag = 'LF'
-treeTag = 'AS'
-outputData = []
-for i in range(2015,2025):
-    bugAlpha = unary_union(alphashape.alphashape(generateDataArray(
-        "datefiles/"+bugTag+"DataSplit/"+bugTag+"Data_Pruned"+str(i)+".csv"),0.95)
-    ).buffer(0)
-    treeAlpha = unary_union(alphashape.alphashape(generateDataArray(
-        "datefiles/"+treeTag+"DataSplit/"+treeTag+"Data_Pruned"+str(i)+".csv"),0.95)
-    ).buffer(0)
-    jc = jaccard(bugAlpha,treeAlpha)
-    if(jc>0): outputData.append([i,np.log10(jc)])
-outputData=np.array(outputData)
-time_stamps = outputData[:,0]
-jaccard_values = outputData[:,1]
+def getValues(bugTag,treeTag):
+    outputData = []
+    for i in range(2015,2025):
+        bugAlpha = unary_union(alphashape.alphashape(generateDataArray(
+            "datefiles/"+bugTag+"DataSplit/"+bugTag+"Data_Pruned"+str(i)+".csv"),0.95)
+        ).buffer(0)
+        treeAlpha = unary_union(alphashape.alphashape(generateDataArray(
+            "datefiles/"+treeTag+"DataSplit/"+treeTag+"Data_Pruned"+str(i)+".csv"),0.95)
+        ).buffer(0)
+        jc = jaccard(bugAlpha,treeAlpha)
+        if(jc>0): outputData.append([i,np.log(jc)])
+    outputData=np.array(outputData)
+    return outputData[:,0],outputData[:,1]
 
 
+    
+def plotBugTreeData(bugTag,treeTag,col):
+    xvals,yvals = getValues(bugTag,treeTag)
+    slope, intercept, r_value, p_value, std_err = linregress(xvals, yvals)
+    # Predicted line
+    predicted = intercept + slope * xvals
+    plt.plot(xvals, yvals, 'o', label="ln(Jaccard Index) "+treeTag,color=col)
+    plt.plot(xvals, predicted, '--', label=f"Linear Fit (R²={r_value**2:.3f}, Slope={slope:.3f}, 2024:{yvals[len(yvals)-1]:.3f})",color=col)
+    #)
 
-slope, intercept, r_value, p_value, std_err = linregress(time_stamps, jaccard_values)
-
-# Predicted line
-predicted = intercept + slope * time_stamps
-
-print(r_value,p_value)
 plt.figure(figsize=(8, 5))
-plt.plot(time_stamps, jaccard_values, 'o', label="Jaccard Index")
-plt.plot(time_stamps, predicted, 'r--', label=f"Linear Fit (R²={r_value**2:.3f})")
+plotBugTreeData('LF','TOH','blue')
+plotBugTreeData('LF','AS','orange')
+plotBugTreeData('LF','BW','green')
+plotBugTreeData('LF','SM','purple')
+plotBugTreeData('LF','RM','red')
 plt.title("Jaccard Index Over Time with Linear Fit")
 plt.xlabel("Year")
-plt.ylabel("Jaccard Index")
-plt.legend()
+plt.ylabel("ln(Jaccard Index)")
+plt.legend(fontsize='8')
 plt.grid(True)
 plt.show()
 
