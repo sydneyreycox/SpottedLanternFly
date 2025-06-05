@@ -9,7 +9,7 @@ def coordTal(path):
         lat,lon = map(float,line.split(',')[1:3])
         data.append([lon,lat])
 
-    B = [-78.5, -76.0, 39.5, 41.0]
+    B = [-79.0, -74.5, 39.5, 41.0]
 
     stepsize = 0.1
     maxla = (B[1] - B[0])/stepsize + 1
@@ -35,7 +35,7 @@ def coordTal(path):
 graphData = []
 
 tallySLF = coordTal('datafiles/LFData_Pruned.csv')
-tallyT = coordTal('datafiles/RMData_Pruned.csv')
+tallyT = coordTal('datafiles/SMData_Pruned.csv')
 
 for x,val in enumerate(tallyT):
     for y in range(len(val)):

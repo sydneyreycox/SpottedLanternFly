@@ -23,15 +23,15 @@ def remove_out(df, data):
     up = Quart2 + 1.5 * IQR
     return df[(df[data] >= low) & (df[data] <= up)]
 
-groups = (['AS'] * len(group1) +
-          ['BW'] * len(group2) +
+groups = (['TOH'] * len(group5) +
           ['RM'] * len(group3) +
+          ['BW'] * len(group2) +
           ['SM'] * len(group4) +
-          ['TOH'] * len(group5))
+          ['AS'] * len(group1) )
 
 df = pd.DataFrame({'value': data, 'group': groups})
 
-dfNoOut = remove_out(df, 'value')
+dfNoOut = df.groupby('group').apply(lambda g: remove_out(g, 'value')).reset_index(drop=True)
 
 cleanData = [group['value'].values for n, group in dfNoOut.groupby('group')]
 
@@ -40,8 +40,9 @@ statistic, pvalue = kruskal(*cleanData)
 print(f'Kruskal-Wallis Test\nH = {statistic:.3f}, p = {pvalue:.15e}') #p-value is so small is is not registered through python(practically zero)/
                                                                     #it is too small for python to register, must to Dunn's test
 
-sns.boxplot(x = 'group', y = 'value', data = dfNoOut,showfliers = False)#data has a lot of outliers, maybe we should look into a different visualization method.
-plt.title("Kruskal-Wallis Test")
+plot = sns.violinplot(x = 'group', y = 'value', data = dfNoOut)#data has a lot of outliers, maybe we should look into a different visualization method.
+plot.set_xticklabels(['TOH', 'RM', 'BW', 'SM', 'AS'])
+plt.title("Distance of SLF to Trees")
 plt.xlabel("Tree")
 plt.ylabel("Distance")
 plt.tight_layout()

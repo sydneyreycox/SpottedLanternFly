@@ -43,6 +43,8 @@ print(f'Kruskal-Wallis Test\nH = {statistic:.3f}, p = {pvalue:.15e}') #p-value i
 
 plot = sns.boxplot(x = 'group', y = 'value', data = dfNoOut,showfliers = False)#data has a lot of outliers, maybe we should look into a different visualization method.
 
+plot.set_xticklabels(['TOH', 'RM', 'BW', 'SM', 'AS'])
+
 group_positions = {'TOH': 0, 'RM': 1, 'BW': 2, 'SM': 3, 'AS': 4} 
 
 boxes = plot.artists
@@ -72,7 +74,7 @@ comp('RM', 'AS', '10^-308', 0.04)
 comp('BW', 'AS', '10^-308', 0.055)
 comp('SM', 'AS', '4.66 * 10^-198', 0.04)
 
-plt.title("Kruskal-Wallis Test")
+plt.title("Distance of SLF to Trees")
 plt.xlabel("Tree")
 plt.ylabel("Distance")
 plt.tight_layout()
