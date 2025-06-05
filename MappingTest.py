@@ -28,7 +28,7 @@ def plotAlphaShape(graph,data,alphaval, innerCol, outerCol, pointCol): #Colors s
     
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~  
   
-TOHdata = generateDataArray("datefiles/RMDataSplit/RMData_Pruned2024.csv")
+TOHdata = generateDataArray("datefiles/TOHDataSplit/TOHData_Pruned2024.csv")
 LFdata = generateDataArray("datefiles/LFDataSplit/LFData_Pruned2024.csv")
 
 #Boilerplate for generating our map in matplotlib
