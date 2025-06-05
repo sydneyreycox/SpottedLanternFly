@@ -5,16 +5,16 @@ def populate(path):
     num = []
     numin = [int(n) for n in file.split(',')]
     num.append(numin)
-    return numin
+    return num
         
-group1 = [populate()]
-group2 = [populate()]
-group3 = [populate()]
-group4 = [populate()]
-group5 = [populate()]
-group6 = [populate()]
-group7 = [populate()]
-group8 = [populate()]
+group1 = populate()
+group2 = populate()
+group3 = populate()
+group4 = populate()
+group5 = populate()
+group6 = populate()
+group7 = populate()
+group8 = populate()
 
 statistic, pvalue = kruskal(group1, group2, group3, group4, group5, group6, group7, group8)
 
