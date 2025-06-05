@@ -30,7 +30,7 @@ statistic, pvalue = kruskal(group5, group3, group2, group4, group1)
 print(f'Kruskal-Wallis Test\nH = {statistic:.3f}, p = {pvalue:.15e}') #p-value is so small is is not registered through python(practically zero)/
                                                                     #it is too small for python to register, must to Dunn's test
 
-sns.boxplot(x = 'group', y = 'value', data = df, showfliers = False)#data has a lot of outliers, maybe we should look into a different visualization method.
+sns.boxplot(x = 'group', y = 'value', data = df)#data has a lot of outliers, maybe we should look into a different visualization method.
 plt.title("Distance of SLF to Trees")
 plt.xlabel("Tree")
 plt.ylabel("Placeholder")
