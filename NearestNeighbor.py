@@ -12,6 +12,7 @@ def generateDataArray(path):
         data.append([lon,lat])
     return np.array(data)
 
+#Make a cKD, calculate the SLF distance to the closest tree 
 def distanceArray(slf_points, tree_points):
     distances, _ = cKDTree(tree_points).query(slf_points, k=1)  # Distance from each SLF to nearest tree
     return distances
@@ -22,6 +23,7 @@ TREE_TAGS =["AS","BW","RM","SM","TOH"]
 
 slf_data=generateDataArray("datafiles/LFData_Pruned.csv")
 
+#Itterate through the tree tags and make the files of their distances for use in KruskWall
 for tag in TREE_TAGS:
     out = open("nndata/nndata_"+tag+'.csv','w+',encoding='utf-8')
     dist = distanceArray(slf_data,generateDataArray("datafiles/"+tag+"Data_Pruned.csv"))
@@ -29,8 +31,6 @@ for tag in TREE_TAGS:
     for val in dist[1:]:
         out.write(","+str(val))
     
-
-
 
 #Histogram here for viewing data, not utilizing currently
 '''
